@@ -11,8 +11,18 @@ final class XCAssertSnapshotTests: XCTestCase {
     XCAssertSnapshot(matching: "hello data".data(using: .utf8)!, as: .raw)
   }
 
-  func test_image() {
-    XCAssertSnapshot(matching: UIImage.trollface(scale: 1), as: .image(scale: 1))
+  func test_uiimage() {
+    XCAssertSnapshot(matching: UIImage.lenna(scale: 1), as: .image(scale: 1))
+  }
+
+  func test_uiview() {
+    let label = UILabel()
+    label.text = "hello world"
+    label.font = UIFont.italicSystemFont(ofSize: 20)
+    label.textColor = .white
+    label.sizeToFit()
+
+    XCAssertSnapshot(matching: label, as: .image)
   }
 
 }

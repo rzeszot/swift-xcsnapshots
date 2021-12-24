@@ -48,7 +48,7 @@ private func differences(_ lhs: CGImage, _ rhs: CGImage) -> Float {
   precondition(lhs.width == rhs.width)
   precondition(lhs.height == rhs.height)
 
-  guard let lhs = data(for: lhs), let rhs = data(for: rhs), lhs.count == rhs.count else {
+  guard let lhs = bytes(for: lhs), let rhs = bytes(for: rhs), lhs.count == rhs.count else {
     return 1
   }
 
@@ -61,9 +61,25 @@ private func differences(_ lhs: CGImage, _ rhs: CGImage) -> Float {
   return Float(different) / Float(lhs.count)
 }
 
-private func data(for image: CGImage) -> Data? {
-  guard let cfdata = image.dataProvider?.data else { return nil }
-  return cfdata as Data
+private func bytes(for image: CGImage) -> [UInt8]? {
+  let count = 4 * image.width * image.height
+  var bytes = [UInt8](repeating: 0, count: count)
+
+  guard let context = CGContext(
+    data: &bytes,
+    width: image.width,
+    height: image.height,
+    bitsPerComponent: 8,
+    bytesPerRow: 4 * image.width,
+    space: CGColorSpace(name: CGColorSpace.sRGB)!,
+    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+  ) else {
+    return nil
+  }
+
+  context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
+
+  return bytes
 }
 
 // MARK: -
