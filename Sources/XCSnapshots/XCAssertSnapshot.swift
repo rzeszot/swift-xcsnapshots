@@ -7,16 +7,18 @@ public func XCAssertSnapshot<Value, Format>(
   function: String = #function,
   line: UInt = #line
 ) {
-  let message = verify(
+  guard let (message, attachments) = verify(
     matching: value(),
     as: snapshotting,
     storage: FileStorage(),
     file: file,
     function: function,
     line: line
-  )
+  ) else { return }
 
-  if let message = message {
-    XCTFail(message, file: file, line: line)
+  XCTFail(message, file: file, line: line)
+
+  XCTContext.runActivity(named: "Add attachments") { activity in
+    attachments.forEach(activity.add)
   }
 }

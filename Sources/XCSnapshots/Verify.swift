@@ -1,4 +1,4 @@
-import Foundation
+import XCTest
 
 func verify<Value, Format>(
   matching value: Value,
@@ -7,7 +7,7 @@ func verify<Value, Format>(
   file: StaticString = #file,
   function: String = #function,
   line: UInt = #line
-) -> String? {
+) -> (String, [XCTAttachment])? {
 
   let directory = directoryFromTestCaseFile(file: "\(file)")
   let file = sanitize(function)
@@ -23,14 +23,10 @@ func verify<Value, Format>(
     let data = storage.read(file: path)
     let reference = snapshotting.persisting.decode(data)
 
-    if let (message, _) = snapshotting.diffing.compare(format, reference) {
-      return message
-    } else {
-      return nil
-    }
+    return snapshotting.diffing.compare(format, reference)
   } else {
     let data = snapshotting.persisting.encode(format)
     storage.write(file: path, data: data)
-    return "No reference was found on disk. Automatically recorded snapshot"
+    return ("No reference was found on disk. Automatically recorded snapshot", [])
   }
 }

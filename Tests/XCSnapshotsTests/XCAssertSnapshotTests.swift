@@ -12,7 +12,7 @@ final class XCAssertSnapshotTests: XCTestCase {
   }
 
   func test_image() {
-    XCAssertSnapshot(matching: UIImage.lenna(scale: 1), as: .image(scale: 1))
+    XCAssertSnapshot(matching: UIImage.trollface(scale: 1), as: .image(scale: 1))
   }
 
 }
