@@ -1,14 +1,20 @@
 import Foundation
 
-struct Fixture: ExpressibleByStringLiteral {
-  let string: String
+struct Fixture {
+  let data: Data
 
-  var data: Data {
-    string.data(using: .utf8)!
+  var string: String {
+    String(data: data, encoding: .utf8)!
+  }
+}
+
+extension Fixture: ExpressibleByStringLiteral {
+  init(stringLiteral value: String) {
+    data = value.data(using: .utf8)!
   }
 
-  init(stringLiteral value: String) {
-    string = value
+  static func from(url: URL) -> Fixture {
+    Fixture(data: try! Data(contentsOf: url))
   }
 }
 

@@ -7,7 +7,7 @@ final class UtilsTests: XCTestCase {
     let file = "/xcsnapshots/Tests/XCSnapshotsTests/VerifyTests.swift"
     let sut = directoryFromTestCaseFile(file: file)
 
-    XCTAssertEqual(sut.absoluteString, "file:///xcsnapshots/Tests/XCSnapshotsTests/Snapshots/VerifyTests")
+    XCTAssertEqual(sut.absoluteString, "file:///xcsnapshots/Tests/XCSnapshotsTests/_Snapshots/VerifyTests")
   }
 
   // MARK: -
