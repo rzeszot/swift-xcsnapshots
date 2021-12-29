@@ -18,16 +18,11 @@ extension Diffing where Value == UIImage {
         .difference(lhs, rhs)
       ]
 
+      let lhs = UIImage(data: lhs.pngData()!, scale: scale)!
+      let rhs = UIImage(data: rhs.pngData()!, scale: scale)!
+
       guard let lhs = lhs.cgImage, let rhs = rhs.cgImage else {
         return ("Conversion to CGImage failed", [])
-      }
-
-      guard lhs.width != 0, lhs.height != 0 else {
-        return ("Reference image has wrong size", [])
-      }
-
-      guard rhs.width != 0, rhs.height != 0 else {
-        return ("Snapshot image has wrong size", [])
       }
 
       let percentage = differences(lhs, rhs)

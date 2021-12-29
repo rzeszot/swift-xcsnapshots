@@ -15,7 +15,8 @@ let package = Package(
     .testTarget(name: "XCSnapshotsTests", dependencies: ["XCSnapshots"], resources: [
       .copy("Helpers/Lenna.png"),
       .copy("Helpers/Trollface.png"),
-      .copy("_Snapshots")
+//      .copy("_Snapshots"),
+      .copy("Extra/UIViewController/_Snapshots")
     ])
   ]
 )
